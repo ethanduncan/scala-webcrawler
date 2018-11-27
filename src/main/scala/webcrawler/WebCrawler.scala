@@ -1,4 +1,4 @@
-package example
+package webcrawler
 
 import org.jsoup.{HttpStatusException, Jsoup}
 import scala.collection.mutable.ListBuffer
