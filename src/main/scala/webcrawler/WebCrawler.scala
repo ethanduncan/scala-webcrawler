@@ -8,7 +8,7 @@ object WebCrawler extends App {
   var mutableList = new ListBuffer[String]()
   var mutablePagesList = new ListBuffer[Page]()
 
-  val URL = "https://wiprodigital.com"
+  val URL = "https://wiprodigital.com/"
 
   def getLinks(url: String, parent: Seq[String]): Option[Seq[Page]] = {
     if(!mutableList.contains(url) && url.contains(URL)) {
@@ -42,28 +42,21 @@ object WebCrawler extends App {
       None
     }
   }
-  //  def reverse(page: Page) = {
-  //    page.
-  //  }
+  
+//TODO map structure for output.
+
   getLinks(URL, Seq.empty)
 
-  for(l <- mutablePagesList
-    .distinct
-    .groupBy(_.url)
-    .values
-    .flatMap(_.headOption)
-    .toList
-    .sortBy(_.url))
-    yield println("\n" + l.toString() + "\n")
+  mutablePagesList.distinct.foreach{
+    i => println("\n" + i.toString())
+  }
 
 }
 
 case class Page(url: String, parents: Seq[String] = Nil, images: Seq[String] = Nil){
   override def toString(): String = {
-    val last = if(parents.size>1) parents.last else url
-    val d = for(x <- parents.reverse)
-      yield x  +  " ->\n"
-    "url = " + last + " links = " +  d + url + " images : " + images
+    val x = for(image <- images) yield "\n " + image
+    "url = " + url + "\nimages : "+ x
   }
 }
 
