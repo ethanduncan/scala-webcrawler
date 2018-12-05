@@ -2,6 +2,10 @@ package webcrawler
 
 import scala.collection.mutable.ListBuffer
 
+/*
+  Page takes a url and can have a list of images, externalLinks and children and Optional Page.
+  It provides methods to add children Pages to a mutatable list and overriden toString method.
+ */
 case class Page(url: String,
                 images: Seq[String] = Nil,
                 externalLinks: Seq[String] = Nil,

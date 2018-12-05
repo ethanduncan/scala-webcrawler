@@ -3,13 +3,20 @@ package webcrawler
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
 
-
+/*
+Webcrawler class that takes a JsoupConnector and has a ListBuffer of Pages.
+Has method that gets all links, external links and images on the page and a
+recursive function that loops through the links.
+ */
 class WebCrawlerService(js: JsoupConnector) {
 
   var mutablePagesList = new ListBuffer[Page]()
 
-  def getLinksPage(url: String,
-                   parent: Option[Page] = None): Option[Page] = {
+  /*
+  Method that takes a url string and an optional parent Page and returns a Optional Page
+   */
+  def getLinksOnPage(url: String,
+                     parent: Option[Page] = None): Option[Page] = {
     (!mutablePagesList.exists(_.url==url),  url.contains(Constants.URL)) match {
       case (true,true) => {
         val jsoupConnection = js.connect(url)
@@ -40,11 +47,13 @@ class WebCrawlerService(js: JsoupConnector) {
       case _ => None
     }
   }
-
+  /*
+   Recursive function that takes an Optional Page and returns an Optional List of Pages.
+   */
   def loopPages(page: Option[Page]): Option[Seq[Page]] = {
     if(page.isDefined) {
       val res = page.get.children.map {
-        getLinksPage(_,page)
+        getLinksOnPage(_,page)
       }
       if (res.nonEmpty) {
         Some(res.flatMap { x =>
